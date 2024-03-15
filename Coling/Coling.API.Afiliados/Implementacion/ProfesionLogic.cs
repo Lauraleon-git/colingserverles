@@ -1,4 +1,5 @@
-﻿using Coling.Shared;
+﻿using Coling.API.Afiliados.Contratos;
+using Coling.Shared;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Coling.API.Afiliados.Implementacion
 {
-    public class ProfesionLogic
+    public class ProfesionLogic:IProfesionLogic
     {
         private readonly Contexto contexto;
         public ProfesionLogic(Contexto contexto)
