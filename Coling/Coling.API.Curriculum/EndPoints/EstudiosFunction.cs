@@ -9,26 +9,24 @@ using System.Net;
 
 namespace Coling.API.Curriculum.EndPoints
 {
-    public class InstitucionFunction
+    public class EstudiosFunction
     {
-        private readonly ILogger<InstitucionFunction> _logger;
-        private readonly IInstitucionRepositorio repos;
+        private readonly ILogger<EstudiosFunction> _logger;
+        private readonly IEstudiosRepositorio repos;
 
-
-
-        public InstitucionFunction(ILogger<InstitucionFunction> logger, IInstitucionRepositorio repos)
+        public EstudiosFunction(ILogger<EstudiosFunction> logger , IEstudiosRepositorio repos)
         {
             _logger = logger;
             this.repos = repos;
         }
 
-        [Function("InsertarInstitucion")]
-        public async Task<HttpResponseData> InsertarInstitucion([HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequestData req)
+        [Function("InsertarEstudios")]
+        public async Task<HttpResponseData> InsertarEstudios([HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequestData req)
         {
             HttpResponseData respuesta;
             try
             {
-                var registro = await req.ReadFromJsonAsync<Institucion>() ?? throw new Exception("Debe ingresae una persona con todos sus datos");
+                var registro = await req.ReadFromJsonAsync<Estudios>() ?? throw new Exception("Debe ingresar un estudio con todos sus datos");
                 registro.RowKey = Guid.NewGuid().ToString();
                 registro.Timestamp = DateTime.Now;
                 bool sw = await repos.Create(registro);
@@ -52,8 +50,8 @@ namespace Coling.API.Curriculum.EndPoints
             }
         }
 
-        [Function("ListarInstitucion")]
-        public async Task<HttpResponseData> ListarInstitucion([HttpTrigger(AuthorizationLevel.Function, "get")] HttpRequestData req)
+        [Function("ListarEstudios")]
+        public async Task<HttpResponseData> ListarEstudios([HttpTrigger(AuthorizationLevel.Function, "get")] HttpRequestData req)
         {
             HttpResponseData respuesta;
             try
@@ -71,15 +69,15 @@ namespace Coling.API.Curriculum.EndPoints
                 return respuesta;
             }
         }
-        [Function("ObtenerInstitucionById")]
-        public async Task<HttpResponseData> ObtenerInstitucionById([HttpTrigger(AuthorizationLevel.Function, "get",Route= "obtenerInstitucionById/{rowkey}")] HttpRequestData req,string rowkey)
+        [Function("ObtenerEstudiosById")]
+        public async Task<HttpResponseData> ObtenerEstudiosById([HttpTrigger(AuthorizationLevel.Function, "get", Route = "obtenerEstudiosById/{rowkey}")] HttpRequestData req, string rowkey)
         {
             HttpResponseData respuesta;
             try
             {
-                var institucion = repos.Get(rowkey) ;
-                respuesta=req.CreateResponse(HttpStatusCode.OK);
-                await respuesta.WriteAsJsonAsync(institucion.Result);
+                var estudios = repos.Get(rowkey);
+                respuesta = req.CreateResponse(HttpStatusCode.OK);
+                await respuesta.WriteAsJsonAsync(estudios.Result);
                 return respuesta;
             }
             catch (Exception)
@@ -89,13 +87,13 @@ namespace Coling.API.Curriculum.EndPoints
                 return respuesta;
             }
         }
-        [Function("ModificarInstitucion")]
-        public async Task<HttpResponseData> ModificarInstitucion([HttpTrigger(AuthorizationLevel.Function, "put",Route ="ModificarInstitucion")] HttpRequestData req)
+        [Function("ModificarEstudios")]
+        public async Task<HttpResponseData> ModificarEstudios([HttpTrigger(AuthorizationLevel.Function, "put", Route = "ModificarEstudios")] HttpRequestData req)
         {
             HttpResponseData respuesta;
             try
             {
-                var registro = await req.ReadFromJsonAsync<Institucion>() ?? throw new Exception("Debe ingresae una persona con todos sus datos");
+                var registro = await req.ReadFromJsonAsync<Estudios>() ?? throw new Exception("Debe ingresae un estudio con todos sus datos");
                 bool sw = await repos.Update(registro);
                 if (sw)
                 {
@@ -116,13 +114,13 @@ namespace Coling.API.Curriculum.EndPoints
                 return respuesta;
             }
         }
-        [Function("EliminarInstitucion")]
-        public async Task<HttpResponseData> EliminarInstitucion([HttpTrigger(AuthorizationLevel.Function, "delete",Route ="EliminarInstituto/{partitionkey}/{rowkey}")] HttpRequestData req,string partitionkey,string rowkey)
+        [Function("EliminarEstudios")]
+        public async Task<HttpResponseData> EliminarEstudios([HttpTrigger(AuthorizationLevel.Function, "delete",Route ="EliminarEstudios/{partitionkey}/{rowkey}")] HttpRequestData req, string partitionkey, string rowkey)
         {
             HttpResponseData respuesta;
             try
             {
-                bool sw = await repos.Delete(partitionkey,rowkey);
+                bool sw = await repos.Delete(partitionkey, rowkey);
                 if (sw)
                 {
                     respuesta = req.CreateResponse(HttpStatusCode.OK);
@@ -142,5 +140,5 @@ namespace Coling.API.Curriculum.EndPoints
                 return respuesta;
             }
         }
-    }
-    }
+        }
+}

@@ -1,36 +1,32 @@
 ﻿using Azure.Data.Tables;
 using Coling.API.Curriculum.Contratos.Repositorio;
 using Coling.API.Curriculum.Modelo;
-using Coling.Shared;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Coling.API.Curriculum.Implementacion.Repositorio
 {
-    
-    public class InstitucionRepositorio : IInstitucionRepositorio
+    public class ExperienciaLaboralRepositorio : IExperienciaLaboralRepositorio
     {
         private readonly string? cadenaConexion;
         private readonly string tablaNombre;
         private readonly IConfiguration configuration;
-        public InstitucionRepositorio(IConfiguration conf)
+        public ExperienciaLaboralRepositorio(IConfiguration conf)
         {
             configuration = conf;
             cadenaConexion = configuration.GetSection("cadenaconexion").Value;
-            tablaNombre = "Institucion";
+            tablaNombre = "ExperienciaLaboral";
         }
-
-        public async Task<bool> Create(Institucion institucion)
+        public async Task<bool> Create(ExperienciaLaboral experienciaLaboral)
         {
             try
             {
                 var tablaCliente = new TableClient(cadenaConexion, tablaNombre);
-                await tablaCliente.UpsertEntityAsync(institucion);
+                await tablaCliente.UpsertEntityAsync(experienciaLaboral);
                 return true;
             }
             catch (Exception)
@@ -40,7 +36,7 @@ namespace Coling.API.Curriculum.Implementacion.Repositorio
             }
         }
 
-        public async Task<bool> Delete(string partitionkey,string rowkey)
+        public async Task<bool> Delete(string partitionkey, string rowkey)
         {
             try
             {
@@ -55,35 +51,35 @@ namespace Coling.API.Curriculum.Implementacion.Repositorio
             }
         }
 
-        public async Task<Institucion> Get(string rowkey)
+        public async Task<ExperienciaLaboral> Get(string rowkey)
         {
-
-            var tablaCliente = new TableClient(cadenaConexion, tablaNombre);
-            var experiencia = await tablaCliente.GetEntityAsync<Institucion>("Educacion", rowkey);
-            return experiencia.Value;
+            
+                var tablaCliente = new TableClient(cadenaConexion, tablaNombre);
+                var experiencia = await tablaCliente.GetEntityAsync<ExperienciaLaboral>("Experiencia", rowkey);
+                return experiencia.Value;
+            
         }
-  
-        public async Task<List<Institucion>> GetAll()
-        {
-            List<Institucion> lista = new List<Institucion>();
-            var tablaCliente = new TableClient(cadenaConexion, tablaNombre);
-            var filtro = $"PartitionKey eq 'Educacion'";
 
-            await foreach (Institucion institucion in tablaCliente.QueryAsync<Institucion>(filter: filtro))
+        public async  Task<List<ExperienciaLaboral>> GetAll()
+        {
+            List<ExperienciaLaboral> lista = new List<ExperienciaLaboral>();
+            var tablaCliente = new TableClient(cadenaConexion, tablaNombre);
+            var filtro = $"PartitionKey eq 'Experiencia'";
+
+            await foreach (ExperienciaLaboral experienciaLaboral in tablaCliente.QueryAsync<ExperienciaLaboral>(filter: filtro))
             {
-                lista.Add(institucion);
+                lista.Add(experienciaLaboral);
             }
 
             return lista;
         }
 
-
-        public async Task<bool> Update(Institucion institucion)
+        public async Task<bool> Update(ExperienciaLaboral experienciaLaboral)
         {
             try
             {
                 var tablaCliente = new TableClient(cadenaConexion, tablaNombre);
-                await tablaCliente.UpdateEntityAsync(institucion, institucion.ETag);
+                await tablaCliente.UpdateEntityAsync(experienciaLaboral, experienciaLaboral.ETag);
                 return true;
             }
             catch (Exception)
@@ -91,8 +87,6 @@ namespace Coling.API.Curriculum.Implementacion.Repositorio
 
                 return false;
             }
-            
-
         }
     }
 }
