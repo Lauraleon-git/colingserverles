@@ -31,7 +31,7 @@ var host = new HostBuilder()
         services.AddTransient<ITelefonoLogic, TelefonoLogic>();
         services.AddTransient<IPersonaTipoSocialLogic, PersonaTipoSocialLogic>();
         services.AddTransient<IProfesionAfiliadoLogic, ProfesionAfiliadoLogic>();
-        services.AddTransient<IProfesionLogic, ProfesionLogic>();
+        
     })
     .Build();
 

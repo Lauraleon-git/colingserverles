@@ -23,8 +23,7 @@ namespace Coling.API.Afiliados
         public virtual DbSet<Telefono>Telefonos { get; set; }   
         public virtual DbSet<TipoSocial>TiposSociales { get; set;}
         public virtual DbSet<PersonaTipoSocial> PersonaTipoSociales { get; set; }
-        public virtual DbSet<GradoAcademico>GradosAcademicos { get;}
-        public virtual DbSet<Profesion>Profesiones { get; set; }
+       
         public virtual DbSet<ProfesionAfiliado>ProfesionAfiliados { get; set; }
 
         

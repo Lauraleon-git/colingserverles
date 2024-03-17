@@ -9,26 +9,24 @@ using System.Net;
 
 namespace Coling.API.Curriculum.EndPoints
 {
-    public class InstitucionFunction
+    public class ProfesionFunction
     {
-        private readonly ILogger<InstitucionFunction> _logger;
-        private readonly IInstitucionRepositorio repos;
+        private readonly ILogger<ProfesionFunction> _logger;
+        private readonly IProfesionRepositorio repos;
 
-
-
-        public InstitucionFunction(ILogger<InstitucionFunction> logger, IInstitucionRepositorio repos)
+        public ProfesionFunction(ILogger<ProfesionFunction> logger,IProfesionRepositorio repos)
         {
             _logger = logger;
             this.repos = repos;
         }
 
-        [Function("InsertarInstitucion")]
-        public async Task<HttpResponseData> InsertarInstitucion([HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequestData req)
+        [Function("InsertarProfesion")]
+        public async Task<HttpResponseData> InsertarProfesion([HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequestData req)
         {
             HttpResponseData respuesta;
             try
             {
-                var registro = await req.ReadFromJsonAsync<Institucion>() ?? throw new Exception("Debe ingresae una persona con todos sus datos");
+                var registro = await req.ReadFromJsonAsync<Profesion>() ?? throw new Exception("Debe ingresae una profesion con todos sus datos");
                 registro.RowKey = Guid.NewGuid().ToString();
                 registro.Timestamp = DateTime.Now;
                 bool sw = await repos.Create(registro);
@@ -36,7 +34,6 @@ namespace Coling.API.Curriculum.EndPoints
                 {
                     respuesta = req.CreateResponse(HttpStatusCode.OK);
                     return respuesta;
-
                 }
                 else
                 {
@@ -51,16 +48,16 @@ namespace Coling.API.Curriculum.EndPoints
                 return respuesta;
             }
         }
-
-        [Function("ListarInstitucion")]
-        public async Task<HttpResponseData> ListarInstitucion([HttpTrigger(AuthorizationLevel.Function, "get")] HttpRequestData req)
+        [Function("ListarProfesion")]
+        public async Task<HttpResponseData> ListarProfesion([HttpTrigger(AuthorizationLevel.Function, "get")] HttpRequestData req)
         {
             HttpResponseData respuesta;
             try
             {
+
                 var lista = repos.GetAll();
                 respuesta = req.CreateResponse(HttpStatusCode.OK);
-                await respuesta.WriteAsJsonAsync(lista.Result);
+                await respuesta.WriteAsJsonAsync(lista);
                 return respuesta;
 
             }
@@ -71,15 +68,15 @@ namespace Coling.API.Curriculum.EndPoints
                 return respuesta;
             }
         }
-        [Function("ObtenerInstitucionById")]
-        public async Task<HttpResponseData> ObtenerInstitucionById([HttpTrigger(AuthorizationLevel.Function, "get",Route= "obtenerInstitucionById/{rowkey}")] HttpRequestData req,string rowkey)
+        [Function("ObtenerProfesionById")]
+        public async Task<HttpResponseData> ObtenerProfesionById([HttpTrigger(AuthorizationLevel.Function, "get", Route = "obtenerProfesionById/{rowkey}")] HttpRequestData req, string rowkey)
         {
             HttpResponseData respuesta;
             try
             {
-                var institucion = repos.Get(rowkey) ;
-                respuesta=req.CreateResponse(HttpStatusCode.OK);
-                await respuesta.WriteAsJsonAsync(institucion.Result);
+                var profesion = repos.Get(rowkey);
+                respuesta = req.CreateResponse(HttpStatusCode.OK);
+                await respuesta.WriteAsJsonAsync(profesion.Result);
                 return respuesta;
             }
             catch (Exception)
@@ -89,19 +86,19 @@ namespace Coling.API.Curriculum.EndPoints
                 return respuesta;
             }
         }
-        [Function("ModificarInstitucion")]
-        public async Task<HttpResponseData> ModificarInstitucion([HttpTrigger(AuthorizationLevel.Function, "put",Route ="ModificarInstitucion")] HttpRequestData req)
+
+        [Function("ModificarProfesion")]
+        public async Task<HttpResponseData> ModificarProfesion([HttpTrigger(AuthorizationLevel.Function, "put", Route = "ModificarProfesion")] HttpRequestData req)
         {
             HttpResponseData respuesta;
             try
             {
-                var registro = await req.ReadFromJsonAsync<Institucion>() ?? throw new Exception("Debe ingresae una persona con todos sus datos");
+                var registro = await req.ReadFromJsonAsync<Profesion>() ?? throw new Exception("Debe ingresar todos los datos de la Profesion");
                 bool sw = await repos.Update(registro);
                 if (sw)
                 {
                     respuesta = req.CreateResponse(HttpStatusCode.OK);
                     return respuesta;
-
                 }
                 else
                 {
@@ -116,18 +113,18 @@ namespace Coling.API.Curriculum.EndPoints
                 return respuesta;
             }
         }
-        [Function("EliminarInstitucion")]
-        public async Task<HttpResponseData> EliminarInstitucion([HttpTrigger(AuthorizationLevel.Function, "delete",Route ="EliminarInstituto/{partitionkey}/{rowkey}")] HttpRequestData req,string partitionkey,string rowkey)
+        [Function("EliminarProfesion")]
+        public async Task<HttpResponseData> EliminarProfesion([HttpTrigger(AuthorizationLevel.Function, "Delete",Route ="EliminarProfesion/{partitionkey}/{rowkey}")] HttpRequestData req,string partitionkey,string rowkey)
         {
             HttpResponseData respuesta;
             try
             {
+
                 bool sw = await repos.Delete(partitionkey,rowkey);
                 if (sw)
                 {
                     respuesta = req.CreateResponse(HttpStatusCode.OK);
                     return respuesta;
-
                 }
                 else
                 {
@@ -142,5 +139,6 @@ namespace Coling.API.Curriculum.EndPoints
                 return respuesta;
             }
         }
+
     }
-    }
+}
