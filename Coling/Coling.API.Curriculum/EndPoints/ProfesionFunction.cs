@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using System.Net;
 
 namespace Coling.API.Curriculum.EndPoints
@@ -21,6 +23,9 @@ namespace Coling.API.Curriculum.EndPoints
         }
 
         [Function("InsertarProfesion")]
+        [OpenApiOperation("Insertarspec", "InsertarProfesion", Description = "Sirve para Insertar una Profesion")]
+        [OpenApiRequestBody("application/json", typeof(Profesion), Description = "Profesion modelo")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(Profesion), Description = "Mostrara la Profesion Creada")]
         public async Task<HttpResponseData> InsertarProfesion([HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequestData req)
         {
             HttpResponseData respuesta;
@@ -49,6 +54,9 @@ namespace Coling.API.Curriculum.EndPoints
             }
         }
         [Function("ListarProfesion")]
+        [OpenApiOperation("Listarspec", "ListarProfesion", Description = "Sirve para listar todas las profesiones")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<Profesion>),
+            Description = "Mostrara una lista de profesiones")]
         public async Task<HttpResponseData> ListarProfesion([HttpTrigger(AuthorizationLevel.Function, "get")] HttpRequestData req)
         {
             HttpResponseData respuesta;
@@ -57,7 +65,7 @@ namespace Coling.API.Curriculum.EndPoints
 
                 var lista = repos.GetAll();
                 respuesta = req.CreateResponse(HttpStatusCode.OK);
-                await respuesta.WriteAsJsonAsync(lista);
+                await respuesta.WriteAsJsonAsync(lista.Result);
                 return respuesta;
 
             }
@@ -69,6 +77,10 @@ namespace Coling.API.Curriculum.EndPoints
             }
         }
         [Function("ObtenerProfesionById")]
+        [OpenApiOperation("Obtenerspec", "ObtenerProfesionById", Description = "Sirve para obtener una Profesion")]
+        [OpenApiParameter(name: "rowkey", In = ParameterLocation.Path, Required = true, Type = typeof(string))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(Profesion), Description = "Mostrara una profesion")]
+
         public async Task<HttpResponseData> ObtenerProfesionById([HttpTrigger(AuthorizationLevel.Function, "get", Route = "obtenerProfesionById/{rowkey}")] HttpRequestData req, string rowkey)
         {
             HttpResponseData respuesta;
@@ -88,6 +100,10 @@ namespace Coling.API.Curriculum.EndPoints
         }
 
         [Function("ModificarProfesion")]
+        [OpenApiOperation("Modificarspec", "ModificarProfesion", Description = "Sirve para Modificar una Profesion")]
+        [OpenApiRequestBody("application/json", typeof(Profesion), Description = "Profesion modelo")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(Profesion),
+            Description = "Mostrara la profesion modificada")]
         public async Task<HttpResponseData> ModificarProfesion([HttpTrigger(AuthorizationLevel.Function, "put", Route = "ModificarProfesion")] HttpRequestData req)
         {
             HttpResponseData respuesta;
@@ -114,6 +130,9 @@ namespace Coling.API.Curriculum.EndPoints
             }
         }
         [Function("EliminarProfesion")]
+        [OpenApiOperation("Eliminarspec", "EliminarProfesion", Description = "Sirve para Eliminar una Profesion")]
+        [OpenApiParameter(name: "partitionkey", In = ParameterLocation.Path, Required = true, Type = typeof(string))]
+        [OpenApiParameter(name: "rowkey", In = ParameterLocation.Path, Required = true, Type = typeof(string))]
         public async Task<HttpResponseData> EliminarProfesion([HttpTrigger(AuthorizationLevel.Function, "Delete",Route ="EliminarProfesion/{partitionkey}/{rowkey}")] HttpRequestData req,string partitionkey,string rowkey)
         {
             HttpResponseData respuesta;
