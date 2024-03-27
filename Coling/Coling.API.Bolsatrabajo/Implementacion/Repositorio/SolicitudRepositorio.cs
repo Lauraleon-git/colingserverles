@@ -11,10 +11,9 @@ using System.Threading.Tasks;
 
 namespace Coling.API.Bolsatrabajo.Repositorio
 {
-    public class SolicitudRepositorio : ISolicitud
+    public class SolicitudRepositorio : ISolicitudRepositorio
     {
         private readonly string? cadenaconexion;
-        private readonly string? tablanombre;
         private readonly IConfiguration configuration;
         private readonly IMongoCollection<Solicitud> collection;
 
@@ -35,8 +34,8 @@ namespace Coling.API.Bolsatrabajo.Repositorio
                 ObjectId objectId;
                 if (ObjectId.TryParse(id, out objectId))
                 {
-                    var result = await collection.DeleteOneAsync(Builders<Solicitud>.Filter.Eq("_id", objectId));
-                    return result.DeletedCount == 1;
+                    var sw = await collection.DeleteOneAsync(Builders<Solicitud>.Filter.Eq("_id", objectId));
+                    return sw.DeletedCount == 1;
                 }
                 else
                 {
@@ -49,7 +48,7 @@ namespace Coling.API.Bolsatrabajo.Repositorio
             }
         }
 
-        public async Task<List<Solicitud>> getall()
+        public async Task<List<Solicitud>> ListarSolicitudes()
         {
             List<Solicitud> lista = new List<Solicitud>();
 
@@ -70,16 +69,16 @@ namespace Coling.API.Bolsatrabajo.Repositorio
             }
         }
 
-        public async Task<Solicitud> ObtenerbyId(string id)
+        public async Task<Solicitud> ObtenerSolicitudbyId(string id)
         {
             try
             {
                 ObjectId objectId;
                 if (ObjectId.TryParse(id, out objectId))
                 {
-                    var cursor = await collection.Find(Builders<Solicitud>.Filter.Eq("_id", objectId)).FirstOrDefaultAsync();
+                    var sw = await collection.Find(Builders<Solicitud>.Filter.Eq("_id", objectId)).FirstOrDefaultAsync();
 
-                    return cursor;
+                    return sw;
 
                 }
                 else
@@ -93,7 +92,7 @@ namespace Coling.API.Bolsatrabajo.Repositorio
             }
         }
 
-        public async Task<bool> UpdateIns(Solicitud solicitud,string id)
+        public async Task<bool> Modificar(Solicitud solicitud,string id)
         {
             try
             {

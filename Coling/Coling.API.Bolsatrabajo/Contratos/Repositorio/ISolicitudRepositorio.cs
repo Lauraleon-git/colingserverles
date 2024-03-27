@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Coling.API.Bolsatrabajo.Contratos.Repositorio
 {
-    public interface ISolicitud
+    public interface ISolicitudRepositorio
     {
         public Task<bool> Insertar(Solicitud solicitud);
-        public Task<List<Solicitud>> getall();
-        public Task<bool> UpdateIns(Solicitud solicitud, string id);
+        public Task<List<Solicitud>> ListarSolicitudes();
+        public Task<bool> Modificar(Solicitud solicitud, string id);
         public Task<bool> Eliminar(string id);
-        public Task<Solicitud> ObtenerbyId(string id);
+        public Task<Solicitud> ObtenerSolicitudbyId(string id);
     }
 }
