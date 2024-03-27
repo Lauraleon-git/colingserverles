@@ -13,12 +13,13 @@ var host = new HostBuilder()
     {
         services.AddApplicationInsightsTelemetryWorkerService();
         services.ConfigureFunctionsApplicationInsights();
-        services.AddTransient<IInstitucionRepositorio, InstitucionRepositorio>();
-        services.AddTransient<IProfesionRepositorio, ProfesionRepositorio>();
-        services.AddTransient<IEstudiosRepositorio, EstudiosRepositorio>();
-        services.AddTransient<IExperienciaLaboralRepositorio, ExperienciaLaboralRepositorio>();
-
+        services.AddScoped<IInstitucionRepositorio, InstitucionRepositorio>();
+        services.AddScoped<IProfesionRepositorio, ProfesionRepositorio>();
+        services.AddScoped<IEstudiosRepositorio, EstudiosRepositorio>();
+        services.AddScoped<IExperienciaLaboralRepositorio, ExperienciaLaboralRepositorio>();
+       
     })
+
     .Build();
 
 host.Run();
