@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using System.Net;
 
 namespace Coling.API.Afiliados.Endpoints
@@ -21,7 +23,11 @@ namespace Coling.API.Afiliados.Endpoints
         }
 
         [Function("ListarTelefono")]
-        public async Task<HttpResponseData> ListarTelefono([HttpTrigger(AuthorizationLevel.Function, "get", Route = "listarTelefono")] HttpRequestData req)
+        [OpenApiOperation("Listarspec", "ListarTelefono", Description = "Sirve para listar todas las Telefono")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<Telefono>),
+         Description = "Mostrara una lista de Telefono")]
+
+        public async Task<HttpResponseData> ListarTelefono([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "listarTelefono")] HttpRequestData req)
         {
             _logger.LogInformation("Ejecutando Azure Function para Listar Telefono");
             try
@@ -41,7 +47,11 @@ namespace Coling.API.Afiliados.Endpoints
         }
 
         [Function("InsertarTelefono")]
-        public async Task<HttpResponseData> InsertarTelefono([HttpTrigger(AuthorizationLevel.Function, "post", Route = "insertarTelefono")] HttpRequestData req)
+        [OpenApiOperation("Insertarspec", "InsertarTelefono", Description = "Sirve para Insertar una Telefono")]
+        [OpenApiRequestBody("application/json", typeof(Telefono), Description = "Telefono modelo")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(Telefono), Description = "Mostrara la Telefono Creada")]
+
+        public async Task<HttpResponseData> InsertarTelefono([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "insertarTelefono")] HttpRequestData req)
         {
             _logger.LogInformation("Ejecutando Azure Function para Insertar Telefono");
             try
@@ -66,7 +76,11 @@ namespace Coling.API.Afiliados.Endpoints
         }
 
         [Function("ObtenerTelefonoById")]
-        public async Task<HttpResponseData> ObtenerTelefonoById([HttpTrigger(AuthorizationLevel.Function, "get", Route = "obtenerTelefonobyid/{id}")] HttpRequestData req, int id)
+        [OpenApiOperation("Obtenerspec", "ObtenerTelefonoById", Description = "Sirve para obtener un Telefono")]
+        [OpenApiParameter(name: "id", In = ParameterLocation.Path, Required = true, Type = typeof(string))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(Telefono), Description = "Mostrara una Telefono")]
+
+        public async Task<HttpResponseData> ObtenerTelefonoById([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "obtenerTelefonobyid/{id}")] HttpRequestData req, int id)
         {
             _logger.LogInformation("Ejecutando Azure Function para Obtener a una Telefono");
             try
@@ -85,7 +99,12 @@ namespace Coling.API.Afiliados.Endpoints
 
         }
         [Function("ModificarTelefono")]
-        public async Task<HttpResponseData> ModificarTelefono([HttpTrigger(AuthorizationLevel.Function, "put", Route = "modificarTelefono/{id}")] HttpRequestData req, int id)
+        [OpenApiOperation("Modificarspec", "ModificarTelefono", Description = "Sirve para Modificar un Telefono")]
+        [OpenApiRequestBody("application/json", typeof(Telefono), Description = "Institucion modelo")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(Telefono),
+         Description = "Mostrara la Telefono modificada")]
+
+        public async Task<HttpResponseData> ModificarTelefono([HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "modificarTelefono/{id}")] HttpRequestData req, int id)
         {
             _logger.LogInformation("Ejecutando Azure Function para Modificar Telefono");
             try
@@ -109,7 +128,9 @@ namespace Coling.API.Afiliados.Endpoints
 
         }
         [Function("EliminarTelefono")]
-        public async Task<HttpResponseData> EliminarTelefono([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "eliminarTelefono/{id}")] HttpRequestData req, int id)
+        [OpenApiOperation("Eliminarspec", "EliminarTelefono", Description = "Sirve para Eliminar un Telefono")]
+        [OpenApiParameter(name: "id", In = ParameterLocation.Path, Required = true, Type = typeof(int))]
+        public async Task<HttpResponseData> EliminarTelefono([HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "eliminarTelefono/{id}")] HttpRequestData req, int id)
         {
             _logger.LogInformation("Ejecutando Azure Function para Eliminar Telefono");
             try

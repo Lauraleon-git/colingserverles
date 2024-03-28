@@ -28,7 +28,7 @@ namespace Coling.API.Curriculum.EndPoints
         [OpenApiOperation("Insertarspec", "InsertarInstitucion", Description = "Sirve para Insertar una Institucion")]
         [OpenApiRequestBody("application/json", typeof(Institucion), Description = "Institucion modelo")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(Institucion), Description = "Mostrara la Institucion Creada")]
-        public async Task<HttpResponseData> InsertarInstitucion([HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequestData req)
+        public async Task<HttpResponseData> InsertarInstitucion([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req)
         {
             HttpResponseData respuesta;
             try
@@ -61,7 +61,7 @@ namespace Coling.API.Curriculum.EndPoints
         [OpenApiOperation("Listarspec", "ListarInstitucion",Description="Sirve para listar todas las instituciones")]
         [OpenApiResponseWithBody(statusCode:HttpStatusCode.OK,contentType:"application/json",bodyType:typeof(List<Institucion>),
             Description="Mostrara una lista de instituciones")]
-        public async Task<HttpResponseData> ListarInstitucion([HttpTrigger(AuthorizationLevel.Function, "get")] HttpRequestData req)
+        public async Task<HttpResponseData> ListarInstitucion([HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequestData req)
         {
             HttpResponseData respuesta;
             try
@@ -83,7 +83,7 @@ namespace Coling.API.Curriculum.EndPoints
         [OpenApiOperation("Obtenerspec","ObtenerInstitucionById",Description ="Sirve para obtener una Institucion")]
         [OpenApiParameter(name:"rowkey",In =ParameterLocation.Path,Required =true,Type =typeof(string))]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(Institucion), Description ="Mostrara una institucion")]
-        public async Task<HttpResponseData> ObtenerInstitucionById([HttpTrigger(AuthorizationLevel.Function, "get",Route= "obtenerInstitucionById/{rowkey}")] HttpRequestData req,string rowkey)
+        public async Task<HttpResponseData> ObtenerInstitucionById([HttpTrigger(AuthorizationLevel.Anonymous, "get",Route= "obtenerInstitucionById/{rowkey}")] HttpRequestData req,string rowkey)
         {
             HttpResponseData respuesta;
             try
@@ -105,7 +105,7 @@ namespace Coling.API.Curriculum.EndPoints
         [OpenApiRequestBody("application/json", typeof(Institucion), Description ="Institucion modelo")]
         [OpenApiResponseWithBody(statusCode:HttpStatusCode.OK, contentType:"application/json", bodyType: typeof(Institucion),
             Description ="Mostrara la institucion modificada")]
-        public async Task<HttpResponseData> ModificarInstitucion([HttpTrigger(AuthorizationLevel.Function, "put",Route ="ModificarInstitucion")] HttpRequestData req)
+        public async Task<HttpResponseData> ModificarInstitucion([HttpTrigger(AuthorizationLevel.Anonymous, "put",Route ="ModificarInstitucion")] HttpRequestData req)
         {
             HttpResponseData respuesta;
             try
@@ -135,7 +135,7 @@ namespace Coling.API.Curriculum.EndPoints
         [OpenApiOperation("Eliminarspec","EliminarInstitucion",Description ="Sirve para Eliminar una institucion")]
         [OpenApiParameter(name:"partitionkey",In =ParameterLocation.Path,Required =true,Type =typeof(string))]
         [OpenApiParameter(name:"rowkey",In =ParameterLocation.Path,Required =true,Type =typeof(string))]
-        public async Task<HttpResponseData> EliminarInstitucion([HttpTrigger(AuthorizationLevel.Function, "delete",Route ="EliminarInstituto/{partitionkey}/{rowkey}")] HttpRequestData req,string partitionkey,string rowkey)
+        public async Task<HttpResponseData> EliminarInstitucion([HttpTrigger(AuthorizationLevel.Anonymous, "delete",Route ="EliminarInstituto/{partitionkey}/{rowkey}")] HttpRequestData req,string partitionkey,string rowkey)
         {
             HttpResponseData respuesta;
             try

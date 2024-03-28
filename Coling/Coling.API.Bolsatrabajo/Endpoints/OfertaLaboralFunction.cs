@@ -26,7 +26,7 @@ namespace Coling.API.Bolsatrabajo.Endpoints
         [OpenApiOperation("Listarspec", "ListarOfertas", Description = " Sirve para listar todas las Ofertas Laborales")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<OfertaLaboral>), Description = "Mostrar una lista de las Ofertas")]
 
-        public async Task<HttpResponseData> ListarOfertas([HttpTrigger(AuthorizationLevel.Function, "get")] HttpRequestData req)
+        public async Task<HttpResponseData> ListarOfertas([HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequestData req)
         {
             try
             {
@@ -47,7 +47,7 @@ namespace Coling.API.Bolsatrabajo.Endpoints
         [OpenApiRequestBody("application/json", typeof(OfertaLaboral), Description = "Oferta Laboral modelo")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(OfertaLaboral), Description = "Insertara la Oferta Laboral.")]
 
-        public async Task<HttpResponseData> InsertarSolicitud([HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequestData req)
+        public async Task<HttpResponseData> InsertarSolicitud([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req)
         {
             try
             {
@@ -106,9 +106,7 @@ namespace Coling.API.Bolsatrabajo.Endpoints
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<OfertaLaboral>), Description = "Listar por ID de la Oferta LAboral")]
         [OpenApiParameter("id", In = ParameterLocation.Path, Required = true, Description = "Lista de Oferta Laboral por Id")]
 
-        public async Task<HttpResponseData> ObtenerOferta(
-          [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "ObtenerOfertaById/{id}")] HttpRequestData req,
-          string id)
+        public async Task<HttpResponseData> ObtenerOferta([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "ObtenerOfertaById/{id}")] HttpRequestData req, string id)
         {
             try
             {
