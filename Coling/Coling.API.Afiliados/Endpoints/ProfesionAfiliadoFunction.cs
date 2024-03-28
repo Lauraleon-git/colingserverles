@@ -21,7 +21,7 @@ namespace Coling.API.Afiliados.Endpoints
         }
 
         [Function("ListarProfesionAfiliado")]
-        public async Task<HttpResponseData> ListarProfesionAfiliado([HttpTrigger(AuthorizationLevel.Function, "get", Route = "listarProfesionAfiliado")] HttpRequestData req)
+        public async Task<HttpResponseData> ListarProfesionAfiliado([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "listarProfesionAfiliado")] HttpRequestData req)
         {
             _logger.LogInformation("Ejecutando Azure Function para Listar ProfesionAfiliado");
             try
@@ -41,7 +41,7 @@ namespace Coling.API.Afiliados.Endpoints
         }
 
         [Function("InsertarProfesionAfiliado")]
-        public async Task<HttpResponseData> InsertarProfesionAfiliado([HttpTrigger(AuthorizationLevel.Function, "post", Route = "insertarProfesionAfiliado")] HttpRequestData req)
+        public async Task<HttpResponseData> InsertarProfesionAfiliado([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "insertarProfesionAfiliado")] HttpRequestData req)
         {
             _logger.LogInformation("Ejecutando Azure Function para Insertar ProfesionAfiliado");
             try
@@ -66,7 +66,7 @@ namespace Coling.API.Afiliados.Endpoints
         }
 
         [Function("ObtenerProfesionAfiliadoById")]
-        public async Task<HttpResponseData> ObtenerProfesionAfiliadoById([HttpTrigger(AuthorizationLevel.Function, "get", Route = "obtenerProfesionAfiliadobyid/{id}")] HttpRequestData req, int id)
+        public async Task<HttpResponseData> ObtenerProfesionAfiliadoById([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "obtenerProfesionAfiliadobyid/{id}")] HttpRequestData req, int id)
         {
             _logger.LogInformation("Ejecutando Azure Function para Obtener a una ProfesionAfiliado");
             try
@@ -85,7 +85,7 @@ namespace Coling.API.Afiliados.Endpoints
 
         }
         [Function("ModificarProfesionAfiliado")]
-        public async Task<HttpResponseData> ModificarProfesionAfiliado([HttpTrigger(AuthorizationLevel.Function, "put", Route = "modificarProfesionAfiliado/{id}")] HttpRequestData req, int id)
+        public async Task<HttpResponseData> ModificarProfesionAfiliado([HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "modificarProfesionAfiliado/{id}")] HttpRequestData req, int id)
         {
             _logger.LogInformation("Ejecutando Azure Function para Modificar ProfesionAfiliado");
             try
@@ -109,7 +109,7 @@ namespace Coling.API.Afiliados.Endpoints
 
         }
         [Function("EliminarProfesionAfiliado")]
-        public async Task<HttpResponseData> EliminarProfesionAfiliado([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "eliminarProfesionAfiliado/{id}")] HttpRequestData req, int id)
+        public async Task<HttpResponseData> EliminarProfesionAfiliado([HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "eliminarProfesionAfiliado/{id}")] HttpRequestData req, int id)
         {
             _logger.LogInformation("Ejecutando Azure Function para Eliminar ProfesionAfiliado");
             try

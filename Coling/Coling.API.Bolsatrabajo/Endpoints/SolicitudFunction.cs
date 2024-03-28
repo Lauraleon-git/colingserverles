@@ -26,7 +26,7 @@ namespace Coling.API.Bolsatrabajo.Endpoints
         [OpenApiOperation("Listarspec", "ListarSolicitud", Description = " Sirve para listar todas las Solicitudes")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<Solicitud>), Description = "Mostrar una lista de las Solicitudes")]
 
-        public async Task<HttpResponseData> ListarSolicitud([HttpTrigger(AuthorizationLevel.Function, "get")] HttpRequestData req)
+        public async Task<HttpResponseData> ListarSolicitud([HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequestData req)
         {
             try
             {
@@ -47,7 +47,7 @@ namespace Coling.API.Bolsatrabajo.Endpoints
         [OpenApiRequestBody("application/json", typeof(Solicitud), Description = "Soicitudes modelo")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(Solicitud), Description = "Insertara la Solicitud.")]
 
-        public async Task<HttpResponseData> InsertarSolicitud([HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequestData req)
+        public async Task<HttpResponseData> InsertarSolicitud([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req)
         {
             try
             {

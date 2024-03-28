@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using System.Net;
 
 namespace Coling.API.Afiliados.Endpoints
@@ -21,7 +23,11 @@ namespace Coling.API.Afiliados.Endpoints
         }
 
         [Function("ListarIdiomas")]
-        public async Task<HttpResponseData> ListarIdiomas([HttpTrigger(AuthorizationLevel.Function, "get", Route = "listarIdiomas")] HttpRequestData req)
+        [OpenApiOperation("Listarspec", "ListarIdiomas", Description = "Sirve para listar todas las Idiomas")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<Idioma>),
+         Description = "Mostrara una lista de Idiomas")]
+
+        public async Task<HttpResponseData> ListarIdiomas([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "listarIdiomas")] HttpRequestData req)
         {
             _logger.LogInformation("Ejecutando Azure Function para Listar Idiomas");
             try
@@ -41,7 +47,12 @@ namespace Coling.API.Afiliados.Endpoints
         }
 
         [Function("InsertarIdioma")]
-        public async Task<HttpResponseData> InsertarIdioma([HttpTrigger(AuthorizationLevel.Function, "post", Route = "insertaridioma")] HttpRequestData req)
+        [OpenApiOperation("Insertarspec", "InsertarIdioma", Description = "Sirve para Insertar una Idioma")]
+        [OpenApiRequestBody("application/json", typeof(Idioma), Description = "Idioma modelo")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(Idioma), Description = "Mostrara la Idioma Creada")]
+
+
+        public async Task<HttpResponseData> InsertarIdioma([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "insertaridioma")] HttpRequestData req)
         {
             _logger.LogInformation("Ejecutando Azure Function para Insertar Persona");
             try
@@ -66,7 +77,11 @@ namespace Coling.API.Afiliados.Endpoints
         }
 
         [Function("ObtenerIdiomaById")]
-        public async Task<HttpResponseData> ObtenerIdiomaById([HttpTrigger(AuthorizationLevel.Function, "get", Route = "obtenerIdiomabyid/{id}")] HttpRequestData req, int id)
+        [OpenApiOperation("Obtenerspec", "ObtenerIdiomaById", Description = "Sirve para obtener un Idioma")]
+        [OpenApiParameter(name: "id", In = ParameterLocation.Path, Required = true, Type = typeof(string))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(Idioma), Description = "Mostrara una Idioma")]
+
+        public async Task<HttpResponseData> ObtenerIdiomaById([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "obtenerIdiomabyid/{id}")] HttpRequestData req, int id)
         {
             _logger.LogInformation("Ejecutando Azure Function para Obtener a una Persona");
             try
@@ -85,7 +100,12 @@ namespace Coling.API.Afiliados.Endpoints
 
         }
         [Function("ModificarIdioma")]
-        public async Task<HttpResponseData> ModificarIdioma([HttpTrigger(AuthorizationLevel.Function, "put", Route = "modificaridioma/{id}")] HttpRequestData req, int id)
+        [OpenApiOperation("Modificarspec", "ModificarIdioma", Description = "Sirve para Modificar un Idioma")]
+        [OpenApiRequestBody("application/json", typeof(Idioma), Description = "Institucion modelo")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(Idioma),
+         Description = "Mostrara la Idioma modificada")]
+
+        public async Task<HttpResponseData> ModificarIdioma([HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "modificaridioma/{id}")] HttpRequestData req, int id)
         {
             _logger.LogInformation("Ejecutando Azure Function para Modificar Idioma");
             try
@@ -109,7 +129,9 @@ namespace Coling.API.Afiliados.Endpoints
 
         }
         [Function("EliminarIdioma")]
-        public async Task<HttpResponseData> EliminarIdioma([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "eliminaridioma/{id}")] HttpRequestData req, int id)
+        [OpenApiOperation("Eliminarspec", "EliminarIdioma", Description = "Sirve para Eliminar un Idioma")]
+        [OpenApiParameter(name: "id", In = ParameterLocation.Path, Required = true, Type = typeof(int))]
+        public async Task<HttpResponseData> EliminarIdioma([HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "eliminaridioma/{id}")] HttpRequestData req, int id)
         {
             _logger.LogInformation("Ejecutando Azure Function para Eliminar Idioma");
             try

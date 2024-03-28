@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using System.Net;
 
 namespace Coling.API.Afiliados.Endpoints
@@ -22,7 +24,10 @@ namespace Coling.API.Afiliados.Endpoints
         }
 
         [Function("ListarDirecciones")]
-        public async Task<HttpResponseData> ListarDirecciones([HttpTrigger(AuthorizationLevel.Function, "get", Route = "listaridirecciones")] HttpRequestData req)
+        [OpenApiOperation("Listarspec", "ListarDirecciones", Description = "Sirve para listar todas las Direcciones")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<Direccion>),
+        Description = "Mostrara una lista de Direcciones")]
+        public async Task<HttpResponseData> ListarDirecciones([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "listaridirecciones")] HttpRequestData req)
         {
             _logger.LogInformation("Ejecutando Azure Function para Listar direcciones");
             try
@@ -42,7 +47,11 @@ namespace Coling.API.Afiliados.Endpoints
         }
 
         [Function("InsertarDireccion")]
-        public async Task<HttpResponseData> InsertarDireccion([HttpTrigger(AuthorizationLevel.Function, "post", Route = "insertarDireccion")] HttpRequestData req)
+        [OpenApiOperation("Insertarspec", "InsertarDireccion", Description = "Sirve para Insertar una Direccion")]
+        [OpenApiRequestBody("application/json", typeof(Direccion), Description = "Direccion modelo")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(Direccion), Description = "Mostrara la Direccion Creada")]
+
+        public async Task<HttpResponseData> InsertarDireccion([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "insertarDireccion")] HttpRequestData req)
         {
             _logger.LogInformation("Ejecutando Azure Function para Insertar Persona");
             try
@@ -67,7 +76,11 @@ namespace Coling.API.Afiliados.Endpoints
         }
 
         [Function("ObtenerDireccionById")]
-        public async Task<HttpResponseData> ObtenerDireccionById([HttpTrigger(AuthorizationLevel.Function, "get", Route = "obtenerDireccionbyid/{id}")] HttpRequestData req, int id)
+        [OpenApiOperation("Obtenerspec", "ObtenerDireccionById", Description = "Sirve para obtener un Direccion")]
+        [OpenApiParameter(name: "id", In = ParameterLocation.Path, Required = true, Type = typeof(string))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(Direccion), Description = "Mostrara una Direccion")]
+
+        public async Task<HttpResponseData> ObtenerDireccionById([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "obtenerDireccionbyid/{id}")] HttpRequestData req, int id)
         {
             _logger.LogInformation("Ejecutando Azure Function para Obtener a una Direccion");
             try
@@ -86,7 +99,11 @@ namespace Coling.API.Afiliados.Endpoints
 
         }
         [Function("ModificarDireccion")]
-        public async Task<HttpResponseData> ModificarDireccion([HttpTrigger(AuthorizationLevel.Function, "put", Route = "modificardireccion/{id}")] HttpRequestData req, int id)
+        [OpenApiOperation("Modificarspec", "ModificarDireccion", Description = "Sirve para Modificar un Direccion")]
+        [OpenApiRequestBody("application/json", typeof(Direccion), Description = "Institucion modelo")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(Direccion),
+          Description = "Mostrara la Direccion modificada")]
+        public async Task<HttpResponseData> ModificarDireccion([HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "modificardireccion/{id}")] HttpRequestData req, int id)
         {
             _logger.LogInformation("Ejecutando Azure Function para Modificar Direccion");
             try
@@ -110,7 +127,9 @@ namespace Coling.API.Afiliados.Endpoints
 
         }
         [Function("EliminarDirection")]
-        public async Task<HttpResponseData> EliminarDirection([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "eliminardirection/{id}")] HttpRequestData req, int id)
+        [OpenApiOperation("Eliminarspec", "EliminarDireccion", Description = "Sirve para Eliminar un Direccion")]
+        [OpenApiParameter(name: "id", In = ParameterLocation.Path, Required = true, Type = typeof(int))]
+        public async Task<HttpResponseData> EliminarDirection([HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "eliminardirection/{id}")] HttpRequestData req, int id)
         {
             _logger.LogInformation("Ejecutando Azure Function para Eliminar direction");
             try
